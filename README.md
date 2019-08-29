@@ -12,8 +12,8 @@ This section explores a few of the problems (and solutions) to neural networks a
 ## Table of Contents
 
 - [Theory](#theory)
-  - [Batch gradient descent](#batch gradient descent)
-  - [Stochastic gradient descent](#stochastic gradient descent)
+  - [Batch gradient descent](#batch-gradient-descent)
+  - [Stochastic gradient descent](#stochastic-gradient-descent)
   - [Mini-batch gradient descent](#mini-batch-gradient-descent)
 - [Code example](#code-example)
 - [References](#references)
