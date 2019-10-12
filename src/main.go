@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/gokadin/ann-core/core"
-	"github.com/gokadin/ann-core/data"
-	"github.com/gokadin/ann-core/layer"
-	"github.com/gokadin/ann-core/runners"
+	"github.com/gokadin/ai-backpropagation-continued/core"
+	"github.com/gokadin/ai-backpropagation-continued/data"
+	"github.com/gokadin/ai-backpropagation-continued/layer"
+	"github.com/gokadin/ai-backpropagation-continued/runners"
 	"math/rand"
 	"runtime"
 	"time"
