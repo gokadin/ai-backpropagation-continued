@@ -1,13 +1,12 @@
 package core
 
 import (
-	"github.com/gokadin/ai-backpropagation-continued"
 	"github.com/gokadin/ai-backpropagation-continued/layer"
 	"log"
 )
 
 type Network struct {
-	builder *ai_backpropagation_continued.builder
+	builder *builder
 	layers  []*layer.Layer
 }
 
@@ -16,12 +15,12 @@ func NewNetwork() *Network {
 		layers: make([]*layer.Layer, 0),
 	}
 
-	n.builder = ai_backpropagation_continued.newBuilder(n)
+	n.builder = newBuilder(n)
 
 	return n
 }
 
-func (n *Network) AddInputLayer(size int) *ai_backpropagation_continued.builder {
+func (n *Network) AddInputLayer(size int) *builder {
 	n.builder.addInputLayer(size)
 	return n.builder
 }

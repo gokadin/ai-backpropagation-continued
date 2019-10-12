@@ -2,7 +2,6 @@ package runners
 
 import (
     "fmt"
-	"github.com/gokadin/ai-backpropagation-continued"
 	"github.com/gokadin/ai-backpropagation-continued/core"
     "log"
 )
@@ -39,18 +38,18 @@ func (nr *NetworkRunner) Train(network *core.Network, inputs, expected [][]float
     numBatches := len(inputs) / nr.batchSize
     t := 0
     for epochCounter := 1; epochCounter != nr.epochs; epochCounter++ {
-        ai_backpropagation_continued.shuffleDataset(inputs, expected)
+        shuffleDataset(inputs, expected)
         for batchCounter := 0; batchCounter < numBatches; batchCounter++ {
             t++
-            batchInputs := ai_backpropagation_continued.partitionData(inputs, batchCounter, nr.batchSize)
-            batchExpected := ai_backpropagation_continued.partitionData(expected, batchCounter, nr.batchSize)
+            batchInputs := partitionData(inputs, batchCounter, nr.batchSize)
+            batchExpected := partitionData(expected, batchCounter, nr.batchSize)
 
-            ai_backpropagation_continued.backpropagate(network, batchInputs, batchExpected)
-            ai_backpropagation_continued.updateWeights(network, nr.batchSize, t, nr.learningRate, nr.beta1, nr.beta2, nr.epsStable)
+            backpropagate(network, batchInputs, batchExpected)
+            updateWeights(network, nr.batchSize, t, nr.learningRate, nr.beta1, nr.beta2, nr.epsStable)
         }
 
         totalOutputs := network.ActivateAll(inputs)
-        totalError := ai_backpropagation_continued.mean(ai_backpropagation_continued.squareError(totalOutputs, expected))
+        totalError := mean(squareError(totalOutputs, expected))
         if epochCounter % 1 == 0 {
             nr.logEpoch(epochCounter, totalError)
         }
@@ -88,7 +87,7 @@ func (nr *NetworkRunner) Test(network *core.Network, inputs, expected [][]float6
     nr.validateTest(network, inputs, expected)
 
 	outputs := network.ActivateAll(inputs)
-	err := ai_backpropagation_continued.mean(ai_backpropagation_continued.squareError(outputs, expected))
+	err := mean(squareError(outputs, expected))
 
 	fmt.Println("Error:", err)
 }

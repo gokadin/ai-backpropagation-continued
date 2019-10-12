@@ -1,29 +1,27 @@
 package node
 
-import "github.com/gokadin/ai-backpropagation-continued"
-
 type Node struct {
 	input       float64
 	output      float64
 	delta       float64
-	connections []*ai_backpropagation_continued.connection
+	connections []*connection
 }
 
 func NewNode() *Node {
 	return &Node{
-		connections: make([]*ai_backpropagation_continued.connection, 0),
+		connections: make([]*connection, 0),
 	}
 }
 
 func (n *Node) ConnectTo(nextNode *Node, weight float64) {
-	n.connections = append(n.connections, ai_backpropagation_continued.newConnection(nextNode, weight))
+	n.connections = append(n.connections, newConnection(nextNode, weight))
 }
 
-func (n *Node) Connections() []*ai_backpropagation_continued.connection {
+func (n *Node) Connections() []*connection {
 	return n.connections
 }
 
-func (n *Node) Connection(index int) *ai_backpropagation_continued.connection {
+func (n *Node) Connection(index int) *connection {
 	return n.connections[index]
 }
 

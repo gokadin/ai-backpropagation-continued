@@ -1,7 +1,9 @@
 package main
 
 import (
+	"github.com/gokadin/ai-backpropagation-continued/core"
 	"github.com/gokadin/ai-backpropagation-continued/data"
+	"github.com/gokadin/ai-backpropagation-continued/layer"
 	"github.com/gokadin/ai-backpropagation-continued/runners"
 	"math/rand"
 	"runtime"
@@ -36,11 +38,11 @@ func main() {
 	//runner.Test(network, trainingSet.Data(), expectedSet.Data())
 }
 
-func buildNetwork() *Network {
-	network := NewNetwork()
+func buildNetwork() *core.Network {
+	network := core.NewNetwork()
 	network.AddInputLayer(2).
-		AddHiddenLayer(2, FunctionSigmoid).
-		AddOutputLayer(1, FunctionSoftmax)
+		AddHiddenLayer(2, layer.FunctionSigmoid).
+		AddOutputLayer(1, layer.FunctionSoftmax)
 
 	return network
 }

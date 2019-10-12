@@ -1,16 +1,14 @@
 package node
 
-import "github.com/gokadin/ai-backpropagation-continued"
-
 type connection struct {
-	nextNode *ai_backpropagation_continued.Node
+	nextNode *Node
 	weight   float64
 	gradient float64
 	velocity float64
 	sqrt float64
 }
 
-func newConnection(nextNode *ai_backpropagation_continued.Node, weight float64) *connection {
+func newConnection(nextNode *Node, weight float64) *connection {
 	return &connection{
 		nextNode: nextNode,
 		weight:   weight,
@@ -21,7 +19,7 @@ func (c *connection) Weight() float64 {
 	return c.weight
 }
 
-func (c *connection) NextNode() *ai_backpropagation_continued.Node {
+func (c *connection) NextNode() *Node {
 	return c.nextNode
 }
 
