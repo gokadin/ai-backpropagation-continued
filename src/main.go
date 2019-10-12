@@ -33,16 +33,16 @@ func main() {
 	runner.SetValidOutputRange(0.05)
 
 	//runner.Train(network, [][]float64{{1, 1}}, [][]float64{{0.5}})
-	//runner.Train(network, [][]float64{{1, 0}, {1, 1}, {0, 1}, {0, 0}}, [][]float64{{1}, {0}, {1}, {0}})
-	runner.Train(network, trainingSet.Data(), expectedSet.Data())
-	runner.Test(network, trainingSet.Data(), expectedSet.Data())
+	runner.Train(network, [][]float64{{1, 0}, {1, 1}, {0, 1}, {0, 0}}, [][]float64{{1}, {0}, {1}, {0}})
+	//runner.Train(network, trainingSet.Data(), expectedSet.Data())
+	//runner.Test(network, trainingSet.Data(), expectedSet.Data())
 }
 
 func buildNetwork() *core.Network {
 	network := core.NewNetwork()
-	network.AddInputLayer(8).
-		AddHiddenLayer(8, layer.FunctionSigmoid).
-		AddOutputLayer(1)
+	network.AddInputLayer(2).
+		AddHiddenLayer(2, layer.FunctionSigmoid).
+		AddOutputLayer(1, layer.FunctionSoftmax)
 
 	return network
 }

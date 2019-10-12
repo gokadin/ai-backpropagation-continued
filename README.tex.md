@@ -11,7 +11,6 @@ We will polish our previous network model by applying a few new techniques and o
 - [part 1 - simplest network](https://github.com/gokadin/ai-simplest-network)
 - [part 2 - backpropagation](https://github.com/gokadin/ai-backpropagation)
 - part 3 - backpropagation-continued (**you are here**)
-- [part 4 - hopfield networks](https://github.com/gokadin/ai-hopfield-networks)
 
 ## Table of Contents
 
@@ -20,7 +19,7 @@ We will polish our previous network model by applying a few new techniques and o
   - [Over fitting and generalization](#over-fitting-and-generalization)
   - [The vanishing gradient problem](#the-vanishing-gradient-problem)
   - [More activation functions](#more-activation-functions)
-    - [Sigmoid](#sigmoid)
+  - [Sigmoid](#sigmoid)
     - [Tanh](#tanh)
     - [ReLU](#relu)
     - [Leaky ReLU](#leaky-relu)
@@ -32,8 +31,7 @@ We will polish our previous network model by applying a few new techniques and o
     - [Stochastic gradient descent](#stochastic-gradient-descent)
     - [Mini-batch gradient descent](#mini-batch-gradient-descent)
   - [Optimization techniques](#optimization-techniques)
-    - [Batch normalization](#batch-normalization)
-    - [Momentum](#momentum)
+  - [Momentum](#momentum)
     - [Adam](#adam)
   - [Better weight initialization](#better-weight-initialization)
 - [Code example](#code-example)
@@ -121,7 +119,7 @@ where $x_a$ is the input of the node being activated and $x_b$ is the input of e
 
 The function always outputs a number in the range $[0, 1]$, representing a *probability distribution*. This means that the sum of the outpus of each node of a layer will always be equal to $1$. In other words, softmax transforms any input vector of arbitrarily large or small numbers into a probability distribution. 
 
-This is why it's often used on the output layer, when we need to classify our data into categories. 
+This is why it's often used on the output layer, where we need to classify our data into categories. 
 
 ### More error functions
 
@@ -179,18 +177,6 @@ In the image above the dataset was split into mini batches of 2 associations eac
 
 ### Optimization techniques
 
-#### Batch normalization
-
-One technique used to reduce the vanishing gradient problem is to normalize the hidden layer outputs just as we normalize inputs before feeding them to the network. Example, if the input values are from 0 to 255, we can normalize them to be between 0 and 1. If we don't normalize the inputs, high values can destabilize the network and lead to the exploding gradient problem as well as slow the training speed substantially. 
-
-This technique makes sure that the hidden layer activations don't go to the extremes (say 0 and 1), so that they don't diminish the gradient too much for the following layers. 
-
-A normalized value $z$ is achieved by subtracting the mean $m$ and dividing by the standard deviation $s$: $z = \frac{y - m}{s} $
-
-We then transform $z$ with two new trainable parameters $g$ and $b$: $(z * g) + b$
-
-🚧UNDER CONSTRUCTION🚧
-
 #### Momentum
 
 Gradient descent is a rather dumb and shortsighted algorithm because it essentially just goes in the direction of the *current* sample of inputs, not being aware of anything else. But the current direction may not be optimal, given the curvature of the function. Gradient descent may end up traversing long shallow planes as well as steep cliffs, using the same learning rate for all terrains of the function. 
@@ -211,13 +197,44 @@ The third one will use the second one and so on: $v_3 = \gamma v_2 + \epsilon \n
 
 #### Adam
 
-🚧UNDER CONSTRUCTION🚧
+Adam is derived from *adaptive momentum estimation* and unlike the momentum described above, it calculates a custom learning rate for each parameter. 
 
-Adam is derived from *adaptive momentum estimation* and it essentially calculates a custom learning rate for each parameter. 
+This is accomplished by calculating two different moving averages over the gradient. The first one is the mean and the second one is the uncentered variance. We do this by introducing two new hyperparameters (beta1 and beta2):
+
+$$ m_t = \beta_1 m_{t - 1} + (1 - \beta_1)g_t $$
+
+$$ v_t = \beta_2 v_{t - 1} + (1 - \beta_2)g_t^2 $$
+
+where $g$ is the gradient $\nabla \frac{\partial E}{\partial w}$. 
+The beta parameters are normally assigned values $0.9$ and $0.999$ respectively and are almost *never* changed. 
+
+The only problem is, we need to perform bias correction since initially $m$ and $v$ are each a vector of zeros. 
+
+$$ \hat{m}_t = \frac{m_t}{1 - \beta_1^t} \quad \hat{v}_t = \frac{v_t}{1 - \beta_2^t} $$
+
+And finally we use the moving averages to compute an individual learning rate for each parameter:
+
+$$ w = w - \epsilon \frac{\hat{m}}{\sqrt{\hat{v}} + \theta} $$
+
+$\theta$ being the a very small value to avoid division by zero, normally assigned $10^{-8}$. 
+
+There are several other optimization functions, however Adam is one the most widely used and successful. 
+
+Find the implementation in `backpropagation.go`. 
 
 ### Better weight initialization
 
-🚧UNDER CONSTRUCTION🚧
+So far we've initialized the weights as Gaussian random variables with a mean of 0 and standard deviation of 1, but we can do better than that. 
+
+One issue with this approach is that it can cause the vanishing gradient problem. Imagine that you have 1000 input nodes all connecting to a node $a$ in the next hidden layer. If half of the inputs are 0 and half are 1, then the weighted sum $x$ of node $a$ is also a Gaussian distribution with mean 0 and standard deviation $\sqrt{500} \approx 22.36$. 
+
+This means that $x$ will often be either very large or very small. Once node $a$ is activated, it's output from a sigmoid function for example will be very close to either 1 or 0. And as we've seen before, this is the recipe for the vanishing gradient problem. 
+
+To avoid this, we can initialize the weights of a certain layer as Gaussian random variables with mean 0 and standard deviation $1 / \sqrt{n}$ where $n$ represents the number of nodes in the layer. Now if we repeat the experiment and have 500 inputs as 0 and 500 inputs as 1, the weighted sum of node $a$ will have a Gaussian distribution with mean 0, but a standard deviation of $\sqrt{3 / 2} \approx 1.22$ and this will avoid activating the node near it's extremes. 
+
+Although this is relevent for weights, biases on the other hand don't benefit much from this and we can continue initializing them to zero, letting gradient descent tune them. 
+
+Find the implementation in `layer.go`. 
 
 ## Code example
 
@@ -231,4 +248,4 @@ Adam is derived from *adaptive momentum estimation* and it essentially calculate
 - Mini-batch gradient descent: https://machinelearningmastery.com/gentle-introduction-mini-batch-gradient-descent-configure-batch-size/
 - Batch normalization: https://towardsdatascience.com/batch-normalization-in-neural-networks-1ac91516821c
 - Momentum: https://gluon.mxnet.io/chapter06_optimization/momentum-scratch.html
-- Adam: https://machinelearningmastery.com/adam-optimization-algorithm-for-deep-learning/ and https://towardsdatascience.com/adam-latest-trends-in-deep-learning-optimization-6be9a291375c
+- Adam: https://towardsdatascience.com/adam-latest-trends-in-deep-learning-optimization-6be9a291375c
