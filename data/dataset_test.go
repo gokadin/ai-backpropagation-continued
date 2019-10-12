@@ -1,11 +1,12 @@
 package data
 
 import (
+	"github.com/gokadin/ai-backpropagation-continued"
 	"testing"
 )
 
 func TestDataset_GenerateRandomData(t *testing.T) {
-	ds := NewDataset()
+	ds := ai_backpropagation_continued.NewDataset()
 
     ds.FromRandom(10, 1)
 
@@ -15,7 +16,7 @@ func TestDataset_GenerateRandomData(t *testing.T) {
 }
 
 func TestDataset_GenerateRandomData_inputSizeShouldBeCorrect(t *testing.T) {
-	ds := NewDataset()
+	ds := ai_backpropagation_continued.NewDataset()
 
     ds.FromRandom(10, 4)
 
@@ -27,7 +28,7 @@ func TestDataset_GenerateRandomData_inputSizeShouldBeCorrect(t *testing.T) {
 }
 
 func TestDataset_FromCsv_dataSizeShouldBeCorrect(t *testing.T) {
-    ds := NewDataset()
+    ds := ai_backpropagation_continued.NewDataset()
 
     ds.FromCsv("csv-test.csv", -1, -1, -1)
 
@@ -37,7 +38,7 @@ func TestDataset_FromCsv_dataSizeShouldBeCorrect(t *testing.T) {
 }
 
 func TestDataset_FromCsv_associationSizeShouldBeCorrect(t *testing.T) {
-	ds := NewDataset()
+	ds := ai_backpropagation_continued.NewDataset()
 
 	ds.FromCsv("csv-test.csv", -1, -1, -1)
 
@@ -49,7 +50,7 @@ func TestDataset_FromCsv_associationSizeShouldBeCorrect(t *testing.T) {
 }
 
 func TestDataset_FromCsv_limitStopsWhenItShould(t *testing.T) {
-	ds := NewDataset()
+	ds := ai_backpropagation_continued.NewDataset()
 
 	ds.FromCsv("csv-test.csv", -1, -1, 4)
 
@@ -59,7 +60,7 @@ func TestDataset_FromCsv_limitStopsWhenItShould(t *testing.T) {
 }
 
 func TestDataset_FromCsv_associationSizeShouldBeCorrectWithCustomIndices(t *testing.T) {
-	ds := NewDataset()
+	ds := ai_backpropagation_continued.NewDataset()
 
 	ds.FromCsv("csv-test.csv", 1, 2, -1)
 
@@ -71,7 +72,7 @@ func TestDataset_FromCsv_associationSizeShouldBeCorrectWithCustomIndices(t *test
 }
 
 func TestDataset_FromCsv_associationSizeShouldBeCorrectWithCustomIndicesWhenOnlyOneColumn(t *testing.T) {
-	ds := NewDataset()
+	ds := ai_backpropagation_continued.NewDataset()
 
 	ds.FromCsv("csv-test.csv", 0, 0, -1)
 
@@ -83,7 +84,7 @@ func TestDataset_FromCsv_associationSizeShouldBeCorrectWithCustomIndicesWhenOnly
 }
 
 func TestDataset_FromCsv_normalizationWorks(t *testing.T) {
-	ds := NewDataset()
+	ds := ai_backpropagation_continued.NewDataset()
 
 	ds.FromCsv("csv-test.csv", -1, -1, -1).Normalize(0, 255)
 
@@ -97,7 +98,7 @@ func TestDataset_FromCsv_normalizationWorks(t *testing.T) {
 }
 
 func TestDataset_FromCsv_oneHotEncodingProducesCorrectSizeForSmallNumber(t *testing.T) {
-	ds := NewDataset()
+	ds := ai_backpropagation_continued.NewDataset()
 
 	ds.FromCsv("csv-test.csv", 0, 0, 3).OneHotEncode()
 
@@ -109,7 +110,7 @@ func TestDataset_FromCsv_oneHotEncodingProducesCorrectSizeForSmallNumber(t *test
 }
 
 func TestDataset_FromCsv_oneHotEncodingProducesCorrectSizeForLargerNumber(t *testing.T) {
-	ds := NewDataset()
+	ds := ai_backpropagation_continued.NewDataset()
 
 	ds.FromCsv("csv-test.csv", 0, 0, -1).OneHotEncode()
 
@@ -121,7 +122,7 @@ func TestDataset_FromCsv_oneHotEncodingProducesCorrectSizeForLargerNumber(t *tes
 }
 
 func TestDataset_FromCsv_oneHotEncodingProducesCorrectValues(t *testing.T) {
-	ds := NewDataset()
+	ds := ai_backpropagation_continued.NewDataset()
 
 	ds.FromCsv("csv-test.csv", 0, 0, 3).OneHotEncode()
 

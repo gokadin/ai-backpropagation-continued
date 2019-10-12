@@ -1,7 +1,9 @@
 package data
 
+import "github.com/gokadin/ai-backpropagation-continued"
+
 type Dataset struct {
-	builder *builder
+	builder *ai_backpropagation_continued.builder
     data [][]float64
 }
 
@@ -10,15 +12,15 @@ func NewDataset() *Dataset {
         data: make([][]float64, 0),
 	}
 
-	dataset.builder = newBuilder(dataset)
+	dataset.builder = ai_backpropagation_continued.newBuilder(dataset)
 	return dataset
 }
 
-func (d *Dataset) FromCsv(filename string, startIndex, endIndex, limit int) *builder {
+func (d *Dataset) FromCsv(filename string, startIndex, endIndex, limit int) *ai_backpropagation_continued.builder {
 	return d.builder.readCsv(filename, startIndex, endIndex, limit)
 }
 
-func (d *Dataset) FromRandom(associations, size int) *builder {
+func (d *Dataset) FromRandom(associations, size int) *ai_backpropagation_continued.builder {
 	return d.builder.readRandom(associations, size)
 }
 

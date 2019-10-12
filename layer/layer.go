@@ -1,6 +1,7 @@
 package layer
 
 import (
+	"github.com/gokadin/ai-backpropagation-continued"
 	"github.com/gokadin/ai-backpropagation-continued/node"
 	"log"
 	"math"
@@ -94,12 +95,12 @@ func (l *Layer) ResetInputs() {
 
 func (l *Layer) Activate() {
 	switch l.activationFunctionName {
-	case FunctionSoftmax:
+	case ai_backpropagation_continued.FunctionSoftmax:
 		l.activateSoftmax()
 		break
 	default:
 		for _, n := range l.nodes {
-			n.Activate(getActivationFunction(l.activationFunctionName))
+			n.Activate(ai_backpropagation_continued.getActivationFunction(l.activationFunctionName))
 		}
 		break
 	}
@@ -110,7 +111,7 @@ func (l *Layer) Activate() {
 }
 
 func (l *Layer) ActivationDerivative() func (x float64) float64 {
-	return getActivationFunctionDerivative(l.activationFunctionName)
+	return ai_backpropagation_continued.getActivationFunctionDerivative(l.activationFunctionName)
 }
 
 func (l *Layer) activateSoftmax() {

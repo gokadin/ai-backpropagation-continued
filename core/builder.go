@@ -1,15 +1,16 @@
 package core
 
 import (
+	"github.com/gokadin/ai-backpropagation-continued"
 	"github.com/gokadin/ai-backpropagation-continued/layer"
 	"log"
 )
 
 type builder struct {
-	network *Network
+	network *ai_backpropagation_continued.Network
 }
 
-func newBuilder(network *Network) *builder {
+func newBuilder(network *ai_backpropagation_continued.Network) *builder {
 	return &builder{
 		network: network,
 	}
