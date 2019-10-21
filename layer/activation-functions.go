@@ -46,7 +46,7 @@ func Identity(x float64) float64 {
 }
 
 func IdentityDerivative(x float64) float64 {
-	return 1
+	return x
 }
 
 func Sigmoid(x float64) float64 {

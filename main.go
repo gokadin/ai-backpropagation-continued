@@ -42,7 +42,7 @@ func buildNetwork() *core.Network {
 	network := core.NewNetwork()
 	network.AddInputLayer(2).
 		AddHiddenLayer(2, layer.FunctionSigmoid).
-		AddOutputLayer(1, layer.FunctionSoftmax)
+		AddOutputLayer(1, layer.FunctionIdentity)
 
 	return network
 }

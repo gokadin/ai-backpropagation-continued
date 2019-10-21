@@ -7,35 +7,37 @@ import (
 	"math/rand"
 )
 
+const defaultBiasValue = 1.0
+
 type Layer struct {
 	nodes     []*node.Node
+	bias *node.Node
 	nextLayer *Layer
     activationFunctionName string
 	isOutputLayer bool
 }
 
 func NewLayer(size int, activationFunctionName string) *Layer {
-	nodes := make([]*node.Node, size + 1) // +1 for bias
-	for i := range nodes {
-		nodes[i] = node.NewNode()
-	}
 	return &Layer{
-		nodes: nodes,
+		nodes: initializeNodes(size),
+		bias: node.NewBiasNode(defaultBiasValue),
         activationFunctionName: activationFunctionName,
 		isOutputLayer: false,
 	}
 }
 
 func NewOutputLayer(size int, activationFunctionName string) *Layer {
+	layer := NewLayer(size, activationFunctionName)
+	layer.isOutputLayer = true
+	return layer
+}
+
+func initializeNodes(size int) []*node.Node {
 	nodes := make([]*node.Node, size)
 	for i := range nodes {
 		nodes[i] = node.NewNode()
 	}
-	return &Layer{
-		nodes: nodes,
-        activationFunctionName: activationFunctionName,
-		isOutputLayer: true,
-	}
+	return nodes
 }
 
 func (l *Layer) Size() int {
@@ -58,6 +60,11 @@ func (l *Layer) ConnectTo(nextLayer *Layer) {
 			n.ConnectTo(nextNode, weight)
 		}
 	}
+
+	for _, nextNode := range nextLayer.nodes {
+		weight := rand.NormFloat64() / math.Sqrt(float64(l.Size()))
+		l.bias.ConnectTo(nextNode, weight)
+	}
 }
 
 func (l *Layer) Nodes() []*node.Node {
@@ -68,17 +75,25 @@ func (l *Layer) Node(index int) *node.Node {
 	return l.nodes[index]
 }
 
+func (l *Layer) Bias() *node.Node {
+	return l.bias
+}
+
+func (l *Layer) Parameters() []*node.Node {
+    if l.isOutputLayer {
+    	return l.nodes
+	}
+
+    return append(l.nodes, l.bias)
+}
+
 func (l *Layer) SetInputs(values []float64) {
-	if len(values) != l.Size() - 1 {
+	if len(values) != l.Size() {
 		log.Fatal("Cannot set values, size mismatch:", len(values), "!=", l.Size())
 	}
 
 	for i, value := range values {
 		l.nodes[i].SetInput(value)
-	}
-
-	if !l.isOutputLayer {
-		l.nodes[len(values)].SetInput(1.0)
 	}
 }
 
@@ -101,6 +116,7 @@ func (l *Layer) Activate() {
 		for _, n := range l.nodes {
 			n.Activate(getActivationFunction(l.activationFunctionName))
 		}
+		l.bias.Activate(nil)
 		break
 	}
 
@@ -113,6 +129,7 @@ func (l *Layer) ActivationDerivative() func (x float64) float64 {
 	return getActivationFunctionDerivative(l.activationFunctionName)
 }
 
+// INCORRECT
 func (l *Layer) activateSoftmax() {
 	sum := 0.0
 	for _, n := range l.nodes {

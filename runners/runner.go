@@ -2,8 +2,8 @@ package runners
 
 import (
     "fmt"
-	"github.com/gokadin/ai-backpropagation-continued/core"
-    "log"
+    "github.com/gokadin/ai-backpropagation-continued/algorithm"
+    "github.com/gokadin/ai-backpropagation-continued/core"
 )
 
 type NetworkRunner struct {
@@ -15,7 +15,6 @@ type NetworkRunner struct {
     epochs int
     maxError float64
     validOutputRange float64
-    verboseLevel int
 }
 
 func NewNetworkRunner() *NetworkRunner {
@@ -32,7 +31,6 @@ func NewNetworkRunner() *NetworkRunner {
 }
 
 func (nr *NetworkRunner) Train(network *core.Network, inputs, expected [][]float64) {
-    nr.validateTrain(network, inputs,  expected)
     fmt.Println("Beginning training of", len(inputs), "associations")
 
     numBatches := len(inputs) / nr.batchSize
@@ -44,8 +42,8 @@ func (nr *NetworkRunner) Train(network *core.Network, inputs, expected [][]float
             batchInputs := partitionData(inputs, batchCounter, nr.batchSize)
             batchExpected := partitionData(expected, batchCounter, nr.batchSize)
 
-            backpropagate(network, batchInputs, batchExpected)
-            updateWeights(network, nr.batchSize, t, nr.learningRate, nr.beta1, nr.beta2, nr.epsStable)
+            algorithm.Backpropagate(network, batchInputs, batchExpected)
+            algorithm.UpdateWeights(network, nr.batchSize, t, nr.learningRate, nr.beta1, nr.beta2, nr.epsStable)
         }
 
         totalOutputs := network.ActivateAll(inputs)
@@ -66,40 +64,13 @@ func (nr NetworkRunner) logEpoch(epochCounter int, totalError float64) {
 
 func (nr NetworkRunner) logBatchProgress(batchCounter, batchPerEpoch int, err float64) {
 	fmt.Printf("%d/%d   error: %f\n", batchCounter, batchPerEpoch, err)
-
-    //goterm.MoveCursorBackward(100)
-    //goterm.Printf("%d/%d   ", batchCounter, batchPerEpoch)
-    //progressStr := "[";
-    //progressBars := batchCounter * 30 / batchPerEpoch
-    //for i := 0; i < progressBars; i++ {
-    //    progressStr += "="
-    //}
-    //for i := 0; i < 30 - progressBars; i++ {
-    //    progressStr += "."
-    //}
-    //progressStr += "]   "
-    //goterm.Print(progressStr)
-    //goterm.Print("error:", err)
-    //goterm.Flush()
 }
 
 func (nr *NetworkRunner) Test(network *core.Network, inputs, expected [][]float64) {
-    nr.validateTest(network, inputs, expected)
-
 	outputs := network.ActivateAll(inputs)
 	err := mean(squareError(outputs, expected))
 
 	fmt.Println("Error:", err)
-}
-
-func (nr *NetworkRunner) validateTest(network *core.Network, inputs, expected [][]float64) {
-
-}
-
-func (nr *NetworkRunner) validateTrain(network *core.Network, inputs, expected [][]float64) {
-    if nr.batchSize == 0 || nr.batchSize > len(inputs) {
-        log.Fatal("batch size is incompatible with the given training set")
-    }
 }
 
 func (nr *NetworkRunner) SetBatchSize(batchSize int) {
@@ -120,8 +91,4 @@ func (nr *NetworkRunner) SetMaxError(maxError float64) {
 
 func (nr *NetworkRunner) SetValidOutputRange(validOutputRange float64) {
     nr.validOutputRange = validOutputRange
-}
-
-func (nr *NetworkRunner) SetVerboseLevel(verboseLevel int) {
-    nr.verboseLevel = verboseLevel
 }

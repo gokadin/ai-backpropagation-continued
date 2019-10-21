@@ -5,11 +5,21 @@ type Node struct {
 	output      float64
 	delta       float64
 	connections []*connection
+	isBias bool
 }
 
 func NewNode() *Node {
 	return &Node{
 		connections: make([]*connection, 0),
+	}
+}
+
+func NewBiasNode(bias float64) *Node {
+	return &Node{
+		connections: make([]*connection, 0),
+		input: bias,
+		output: bias,
+		isBias: true,
 	}
 }
 
@@ -58,7 +68,9 @@ func (n *Node) Delta() float64 {
 }
 
 func (n *Node) Activate(activationFunction func(x float64) float64) {
-	n.output = activationFunction(n.input)
+	if !n.isBias {
+		n.output = activationFunction(n.input)
+	}
 
 	for _, connection := range n.connections {
 		connection.nextNode.AddInput(n.output * connection.weight)
