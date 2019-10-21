@@ -15,24 +15,34 @@ We will polish our previous network model by applying a few new techniques and o
 ## Table of Contents
 
 - [Theory](#theory)
+
   - [Local and global minima](#local-and-global-minima)
+
   - [Over fitting and generalization](#over-fitting-and-generalization)
+
   - [The vanishing gradient problem](#the-vanishing-gradient-problem)
+
   - [More activation functions](#more-activation-functions)
   - [Sigmoid](#sigmoid)
     - [Tanh](#tanh)
     - [ReLU](#relu)
     - [Leaky ReLU](#leaky-relu)
     - [Softmax](#softmax)
+
   - [More error functions](#more-error-functions)
+
     - [Cross entropy](#cross-entropy)
+
   - [Different types of gradient descent](#different-types-of-gradient-descent)
+
     - [Batch gradient descent](#batch-gradient-descent)
     - [Stochastic gradient descent](#stochastic-gradient-descent)
     - [Mini-batch gradient descent](#mini-batch-gradient-descent)
+
   - [Optimization techniques](#optimization-techniques)
   - [Momentum](#momentum)
     - [Adam](#adam)
+
   - [Better weight initialization](#better-weight-initialization)
 - [Code example](#code-example)
 - [References](#references)
