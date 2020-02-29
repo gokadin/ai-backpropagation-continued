@@ -132,9 +132,13 @@ Cross entropy then takes these values and gives a greater loss the more they div
 ![batch](readme-images/cross-entropy.png)
 
 The cross entropy loss formula is
+
 $$ L = -\bold{y} log(\bold{\hat{y}}) $$
+
 where $\bold{\hat{y}}$ is the prediction output vector, or
+
 $$ L = -\frac{1}{T} \sum^T_{t=1} \bold{y_t} log(\bold{\hat{y_t}}) $$
+
 for all $T$ associations.  
 
 #### Batch gradient descent
