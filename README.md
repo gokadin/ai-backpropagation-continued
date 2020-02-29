@@ -123,7 +123,7 @@ This is why it's often used on the output layer, where we need to classify our d
 
 ### More error functions
 
-#### Cross entropy (multiclass classification)
+#### Cross entropy
 
 Cross entropy measures the loss between a probability distribution (the output) and the actual values. It's often used in conjunction with the **softmax** activation on the output layer, since this gives probability values for each category of a classification. 
 For example, if we want to classify the "mnist" dataset (images of handwritten digits from 0 to 9), then we can predict the probability of the input for each of the digits using softmax at the output layer. 
@@ -131,7 +131,7 @@ Cross entropy then takes these values and gives a greater loss the more they div
 
 ![batch](readme-images/cross-entropy.png)
 
-The cross entropy loss formula is
+The cross entropy loss formula for multiclass classification is
 
 <p align="center"><img src="/tex/582837928e2b1aa2c6e8c9939004e5b7.svg?invert_in_darkmode&sanitize=true" align=middle width=100.7818614pt height=16.438356pt/></p>
 
