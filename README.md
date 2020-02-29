@@ -132,9 +132,13 @@ Cross entropy then takes these values and gives a greater loss the more they div
 ![batch](readme-images/cross-entropy.png)
 
 The cross entropy loss formula is
+
 <p align="center"><img src="/tex/582837928e2b1aa2c6e8c9939004e5b7.svg?invert_in_darkmode&sanitize=true" align=middle width=100.7818614pt height=16.438356pt/></p>
+
 where <img src="/tex/4ccf1a8ffa099c4fd7723b6a9fb75fc1.svg?invert_in_darkmode&sanitize=true" align=middle width=10.239687149999991pt height=22.831056599999986pt/> is the prediction output vector, or
+
 <p align="center"><img src="/tex/c40e0dd87fe9be77cc33d4ed66d10dc6.svg?invert_in_darkmode&sanitize=true" align=middle width=158.58424394999997pt height=47.60747145pt/></p>
+
 for all <img src="/tex/2f118ee06d05f3c2d98361d9c30e38ce.svg?invert_in_darkmode&sanitize=true" align=middle width=11.889314249999991pt height=22.465723500000017pt/> associations.  
 
 #### Batch gradient descent
