@@ -15,34 +15,24 @@ We will polish our previous network model by applying a few new techniques and o
 ## Table of Contents
 
 - [Theory](#theory)
-
   - [Local and global minima](#local-and-global-minima)
-
   - [Over fitting and generalization](#over-fitting-and-generalization)
-
   - [The vanishing gradient problem](#the-vanishing-gradient-problem)
-
   - [More activation functions](#more-activation-functions)
   - [Sigmoid](#sigmoid)
     - [Tanh](#tanh)
     - [ReLU](#relu)
     - [Leaky ReLU](#leaky-relu)
     - [Softmax](#softmax)
-
   - [More error functions](#more-error-functions)
-
     - [Cross entropy](#cross-entropy)
-
   - [Different types of gradient descent](#different-types-of-gradient-descent)
-
     - [Batch gradient descent](#batch-gradient-descent)
     - [Stochastic gradient descent](#stochastic-gradient-descent)
     - [Mini-batch gradient descent](#mini-batch-gradient-descent)
-
   - [Optimization techniques](#optimization-techniques)
   - [Momentum](#momentum)
     - [Adam](#adam)
-
   - [Better weight initialization](#better-weight-initialization)
 - [Code example](#code-example)
 - [References](#references)
@@ -133,27 +123,19 @@ This is why it's often used on the output layer, where we need to classify our d
 
 ### More error functions
 
-#### Cross entropy
+#### Cross entropy (multiclass classification)
 
-##### What is entropy?
+Cross entropy measures the loss between a probability distribution (the output) and the actual values. It's often used in conjunction with the **softmax** activation on the output layer, since this gives probability values for each category of a classification. 
+For example, if we want to classify the "mnist" dataset (images of handwritten digits from 0 to 9), then we can predict the probability of the input for each of the digits using softmax at the output layer. 
+Cross entropy then takes these values and gives a greater loss the more they diverge from the expected values in a logarithmic fashion. 
 
-Entropy is the average bits of transmitted information where one bit reduces our uncertainty of a situation by a factor of two. 
+![batch](readme-images/cross-entropy.png)
 
-To be more concrete, let's illustrate it with a few examples. Say there is a match of soccer between two teams that have an equal chance of winning (50% each). If someone tells us that team 1 will win, they will have transmitted 1 bit of information to us. 
-
-If there are 4 teams instead that are equally likely to win and someone tells us that team 1 will win, then they would have transmitted 2 bits of information because they would have reduced our uncertainty by a factor of 4 (<img src="/tex/c9fadd243c9e21b8d452d1a48b248b42.svg?invert_in_darkmode&sanitize=true" align=middle width=45.730508999999984pt height=26.76175259999998pt/>). Therefore, we can calculate the number of bits transmitted by computing the base two log of 4 (<img src="/tex/4452195ef62e364d9ce375405e28c596.svg?invert_in_darkmode&sanitize=true" align=middle width=79.55292014999999pt height=24.65753399999998pt/>). 
-
-Now let's say that we have two teams again, but team 1 has a 75% chance of winning and team 2 has a 25% chance. If we are told that team 2 will win, then the transmitted information is <img src="/tex/2888dcda36b1f4e665448de5accbc592.svg?invert_in_darkmode&sanitize=true" align=middle width=113.34299624999998pt height=24.65753399999998pt/> bits. The uncertainty reduction is the inverse of the event's probability. Similarily, if we are told that team 1 will win, then we are given <img src="/tex/e57d75bb57d5e1ac48d5485ff98b2e35.svg?invert_in_darkmode&sanitize=true" align=middle width=134.34763979999997pt height=24.65753399999998pt/> bits. If we sum these numbers it will give us the average transmitted bits: <img src="/tex/1ed812c74e49caeac2ce4af60f146ae6.svg?invert_in_darkmode&sanitize=true" align=middle width=198.1733754pt height=21.18721440000001pt/> bits. This is called entropy and its general equation is:
-
-<p align="center"><img src="/tex/d2eef3fe14eed090b718974fe86eac81.svg?invert_in_darkmode&sanitize=true" align=middle width=168.66628845pt height=36.6554298pt/></p>
-
-...
-
-<p align="center"><img src="/tex/f97a0b84890ec393511f3e1f52789ce3.svg?invert_in_darkmode&sanitize=true" align=middle width=125.6620926pt height=50.04352485pt/></p>
-
-<p align="center"><img src="/tex/1d79ab18f324098ef3ebfc2ee070f15c.svg?invert_in_darkmode&sanitize=true" align=middle width=198.03522585pt height=50.04352485pt/></p>
-
-### Different types of gradient descent
+The cross entropy loss formula is
+<p align="center"><img src="/tex/582837928e2b1aa2c6e8c9939004e5b7.svg?invert_in_darkmode&sanitize=true" align=middle width=100.7818614pt height=16.438356pt/></p>
+where <img src="/tex/4ccf1a8ffa099c4fd7723b6a9fb75fc1.svg?invert_in_darkmode&sanitize=true" align=middle width=10.239687149999991pt height=22.831056599999986pt/> is the prediction output vector, or
+<p align="center"><img src="/tex/c40e0dd87fe9be77cc33d4ed66d10dc6.svg?invert_in_darkmode&sanitize=true" align=middle width=158.58424394999997pt height=47.60747145pt/></p>
+for all <img src="/tex/2f118ee06d05f3c2d98361d9c30e38ce.svg?invert_in_darkmode&sanitize=true" align=middle width=11.889314249999991pt height=22.465723500000017pt/> associations.  
 
 #### Batch gradient descent
 
