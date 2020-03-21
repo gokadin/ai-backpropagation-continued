@@ -15,34 +15,24 @@ We will polish our previous network model by applying a few new techniques and o
 ## Table of Contents
 
 - [Theory](#theory)
-
   - [Local and global minima](#local-and-global-minima)
-
   - [Over fitting and generalization](#over-fitting-and-generalization)
-
   - [The vanishing gradient problem](#the-vanishing-gradient-problem)
-
   - [More activation functions](#more-activation-functions)
   - [Sigmoid](#sigmoid)
     - [Tanh](#tanh)
     - [ReLU](#relu)
     - [Leaky ReLU](#leaky-relu)
     - [Softmax](#softmax)
-
   - [More error functions](#more-error-functions)
-
     - [Cross entropy](#cross-entropy)
-
   - [Different types of gradient descent](#different-types-of-gradient-descent)
-
     - [Batch gradient descent](#batch-gradient-descent)
     - [Stochastic gradient descent](#stochastic-gradient-descent)
     - [Mini-batch gradient descent](#mini-batch-gradient-descent)
-
   - [Optimization techniques](#optimization-techniques)
   - [Momentum](#momentum)
     - [Adam](#adam)
-
   - [Better weight initialization](#better-weight-initialization)
 - [Code example](#code-example)
 - [References](#references)
@@ -135,25 +125,21 @@ This is why it's often used on the output layer, where we need to classify our d
 
 #### Cross entropy
 
-##### What is entropy?
+Cross entropy measures the loss between a probability distribution (the output) and the actual values. It's often used in conjunction with the **softmax** activation on the output layer, since this gives probability values for each category of a classification. 
+For example, if we want to classify the "mnist" dataset (images of handwritten digits from 0 to 9), then we can predict the probability of the input for each of the digits using softmax at the output layer. 
+Cross entropy then takes these values and gives a greater loss the more they diverge from the expected values in a logarithmic fashion. 
 
-Entropy is the average bits of transmitted information where one bit reduces our uncertainty of a situation by a factor of two. 
+![batch](readme-images/cross-entropy.png)
 
-To be more concrete, let's illustrate it with a few examples. Say there is a match of soccer between two teams that have an equal chance of winning (50% each). If someone tells us that team 1 will win, they will have transmitted 1 bit of information to us. 
+The cross entropy loss formula for multiclass classification is
 
-If there are 4 teams instead that are equally likely to win and someone tells us that team 1 will win, then they would have transmitted 2 bits of information because they would have reduced our uncertainty by a factor of 4 ($2^2 = 4$). Therefore, we can calculate the number of bits transmitted by computing the base two log of 4 ($log_2(4) = 2$). 
+$$ L = -\bold{y} log(\bold{\hat{y}}) $$
 
-Now let's say that we have two teams again, but team 1 has a 75% chance of winning and team 2 has a 25% chance. If we are told that team 2 will win, then the transmitted information is $-log_2(0.25) = 2$ bits. The uncertainty reduction is the inverse of the event's probability. Similarily, if we are told that team 1 will win, then we are given $-log_2(0.75) = 0.41$ bits. If we sum these numbers it will give us the average transmitted bits: $2 * 0.25 + 0.41 * 0.75 = 0.81$ bits. This is called entropy and its general equation is:
+where $\bold{\hat{y}}$ is the prediction output vector, or
 
-$$ H(p) = -\sum_ip_ilog_2(p_i) $$
+$$ L = -\frac{1}{T} \sum^T_{t=1} \bold{y_t} log(\bold{\hat{y_t}}) $$
 
-...
-
-$$ E = - \sum^J_{j=1} t_j log y_j $$
-
-$$ \frac{\partial E}{\partial x_i} = \sum^J_{j=1} \frac{\partial C}{\partial y_j} \frac{\partial y_i}{\partial x_i} = y_i - t_i $$
-
-### Different types of gradient descent
+for all $T$ associations.  
 
 #### Batch gradient descent
 
